@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UltraFace;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace OscSimpl.Examples
 	public class SedingOscSpout : MonoBehaviour
 	{
 		[SerializeField] OscOut _oscOut;
+
+        public GameObject GO;
 
 		OscMessage _message2; // Cached message.
         
@@ -63,6 +66,10 @@ namespace OscSimpl.Examples
                         generalData.Add(hipCenter.x);
                         generalData.Add(hipCenter.y);
                         generalData.Add(footCenterY);
+
+                      //  Vector3 pos = GO.transform.position;
+                      //  pos.x = hipCenter.x;
+                       // GO.transform.position = pos;
                     }
                 }
 
@@ -80,6 +87,26 @@ namespace OscSimpl.Examples
                 {
                     _oscOut.Send(address3, generalData.Cast<object>().ToArray());
                 }
+
+
+                if (generalData != null && generalData.Count > 0)
+                {
+                    // Crée un cube
+                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+                    // Récupère la position X de la première valeur du tableau
+                    //float xPosition = generalData[0].x;
+                    float xPosition = script.posePositionsArray[0][0].x;
+
+                    // Positionne le cube (en gardant Y et Z à 0)
+                    cube.transform.position = new Vector3(xPosition, 0f, 13f);
+                }
+                else
+                {
+                    Debug.LogWarning("Le tableau 'positions' est vide ou nul.");
+                }
+
+
             }
         }
 
